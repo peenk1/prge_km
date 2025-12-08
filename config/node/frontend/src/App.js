@@ -1,13 +1,22 @@
+import {Suspense} from 'react';
+import {RouterProvider} from 'react-router-dom';
+import {CircularProgress} from "@mui/material";
+import routes from "./routes/Router";
+
 import './styles/style.scss';
-import Home from "./pages/Home";
 
 function App() {
   return (
     <div className="app">
-        <Home/>
-
-    </div>
+        <Suspense
+            fallback={
+                <CircularProgress/>
+            }
+        >
+            <RouterProvider router={routes}/>
+        </Suspense>
+     </div>
   );
 }
-
+//TODO REMOVE DEPENDENCY OF REACT ROUTER IN CONTENERIZED VERS
 export default App;
