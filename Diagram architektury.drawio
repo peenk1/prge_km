@@ -14,7 +14,7 @@
           <mxGeometry height="60" width="30" x="-240" y="230" as="geometry" />
         </mxCell>
         <mxCell id="amy2MN5Gt-v8VVifb1jP-7" edge="1" parent="1" source="amy2MN5Gt-v8VVifb1jP-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=-0.002;entryY=0.122;entryDx=0;entryDy=0;entryPerimeter=0;" target="amy2MN5Gt-v8VVifb1jP-1">
-          <mxGeometry relative="1" as="geometry">
+          <mxGeometry relative="1" as="geometry">npm
             <mxPoint x="-90" y="250" as="targetPoint" />
           </mxGeometry>
         </mxCell>
