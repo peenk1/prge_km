@@ -1,5 +1,6 @@
 {
   "name": "frontend",
+  "homepage": "https://peenk1.github.io/prge_km",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
