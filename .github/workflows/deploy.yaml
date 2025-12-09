@@ -39,8 +39,8 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v4
+      - name: Upload Pages artifacts
+        uses: actions/upload-pages-artifact@v3
         with:
           path: config/node/frontend/build
 
