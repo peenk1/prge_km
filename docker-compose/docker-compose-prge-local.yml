@@ -22,5 +22,17 @@ services:
     volumes:
       - postgis-prge-2025-data:/var/lib/postgresql/data
 
+  geoserver:
+    build:
+      context: ..
+      dockerfile: docker/geoserver/Dockerfile
+    image: 'prge_2025_geoserver'
+    container_name: 'prge_2025_geoserver'
+    ports:
+      - 9000:8080
+    volumes:
+      - ../.tmp/data:/opt/geoserver_data
+      - ../.tmp/geoserver-config:/opt/geoserver/data_dir
+
 volumes:
   postgis-prge-2025-data:
