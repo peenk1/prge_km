@@ -25,11 +25,12 @@ jobs:
 
       - name: uruchom srodowisko docker-compose
         env:
+          ENV_NAME: ${{github.ref_name}}
           #DB
           POSTGRES_DB: ${{secrets.POSTGRES_DB}}
           POSTGRES_USER: ${{secrets.POSTGRES_USER}}
           POSTGRES_PASSWORD: ${{secrets.POSTGRES_PASSWORD}}
 
         run: |
-          docker-compose -f ./docker-compose/docker-compose-prge-local.yml -p remote-prge up --build -d
+          docker-compose -f ./docker-compose/docker-compose-prge-remote.yml -p remote-prge up --build -d
 
