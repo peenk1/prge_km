@@ -18,7 +18,7 @@ services:
       - *env-postgres-user
       - *env-postgres-password
     ports:
-      - 5445:5432
+      - ${POSTGRES_PORT}:5432
     volumes:
       - postgis-prge-2025-data:/var/lib/postgresql/data
 
