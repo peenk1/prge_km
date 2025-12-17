@@ -3,7 +3,7 @@ name: build and push and deploy
 on:
   push:
     branches:
-      - env-test:
+      - env-test
 
 
 permissions:
@@ -21,3 +21,9 @@ jobs:
 
       - name: Print
         run: echo 'witaj'
+
+
+      - name: uruchom srodowisko docker-compose
+        run: |
+          docker-compose -f ./docker-compose/docker-compose-prge-local.yml --env-file .env -p local-prge up --build -d
+
