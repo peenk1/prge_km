@@ -13,7 +13,7 @@ permissions:
   packages: write
 
 jobs:
-  build-and-push:
+  build-and-deploy:
     name: Build & Push
     runs-on:
       - self-hosted
@@ -30,6 +30,7 @@ jobs:
         env:
           ENV_NAME: ${{github.ref_name}}
           POSTGRES_PORT: ${{secrets.POSTGRES_PORT}}
+          GEOSERVER_PORT: ${{secrets.GEOSERVER_PORT}}
           #DB
           POSTGRES_DB: ${{secrets.POSTGRES_DB}}
           POSTGRES_USER: ${{secrets.POSTGRES_USER}}
