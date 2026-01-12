@@ -33,6 +33,18 @@ services:
     volumes:
       - ../.tmp/data-${ENV_NAME}:/opt/geoserver_data
 
+  fastapi:
+    build:
+      context: ..
+      dockerfile: docker/fastapi/Dockerfile
+    image: 'prge_2025_fastapi'
+    container_name: prge-2025-fastapi-${ENV_NAME}
+    environment:
+      - *env-postgres-db
+      - *env-postgres-user
+      - *env-postgres-password
+    ports:
+      - ${FASTAPI_PORT}:10000
 
 
 volumes:
