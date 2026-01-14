@@ -7,7 +7,7 @@ function ListOfItems(props) {
     // https://jsonplaceholder.typicode.com/users
     useEffect(() => {
         // http://localhost:10000/app/get_users
-        fetch('https://jsonplaceholder.typicode.com/users')
+        fetch('http://localhost:10000/app/get_users')
             .then(res => res.json())
             .then(res => {
                 console.log(res);
@@ -22,8 +22,8 @@ function ListOfItems(props) {
         <div>
             List of items
             <div>
-                {/*{users.data?.map(user => <UserCard user={user}/>)}*/}
-                {users?.map(user => <UserCard user={user}/>)}
+                {users.data?.map(user => <UserCard user={user}/>)}
+                {/*{users?.map(user => <UserCard user={user}/>)}*/}
             </div>
         </div>
     );
