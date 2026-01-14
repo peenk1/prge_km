@@ -30,7 +30,7 @@ function MapComponent(props) {
                     }),
                     new TileLayer({
                         source: new TileWMS({
-                          url: 'http://localhost:9000/geoserver/ne/wms?',
+                          url: 'http://localhost:9001/geoserver/ne/wms?',
                           params: {'LAYERS': 'ne:coastlines', 'TILED': true},
                           serverType: 'geoserver',
                           transition: 0,

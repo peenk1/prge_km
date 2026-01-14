@@ -44,5 +44,23 @@ services:
       - 10000:10000
 
 
+  node:
+    build:
+      context: ..
+      dockerfile: docker/node/Dockerfile
+    image: 'prge_2025_node'
+    container_name: 'prge_2025_node'
+    volumes:
+      - ../config/node/frontend/src:/app/src
+      - ../config/node/frontend/package.json:/app/package.json
+      - ../config/node/frontend/package-lock.json:/app/package-lock.json
+    ports:
+      - 3000:3000
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true
+
+
+
 volumes:
   postgis-prge-2025-data:
