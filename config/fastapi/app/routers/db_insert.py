@@ -27,12 +27,13 @@ async def insert_user(user: UserData):
         params = {
             "name": user.name,
             "posts": user.posts,
-            "location": user.location
+            "location": user.location,
+            "geom": user.geom
         }
 
         sql_query = text("""
-                         insert into users (name, posts, location)
-                         values (:name, :posts, :location); \
+                         insert into users (name, posts, location, geom)
+                         values (:name, :posts, :location, :geom); \
                          """)
 
         with db_connection.connect() as conn:

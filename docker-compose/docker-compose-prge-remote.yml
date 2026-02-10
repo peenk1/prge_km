@@ -33,6 +33,16 @@ services:
     volumes:
       - ../.tmp/data-${ENV_NAME}:/opt/geoserver_data
 
+  nginx:
+    build:
+      context: ..
+      dockerfile: docker/nginx/Dockerfile_local
+    image: 'prge_2025_nginx'
+    container_name: prge_2025_nginx-${ENV_NAME}
+    ports:
+      - 8085:80
+
+
   fastapi:
     build:
       context: ..
@@ -49,3 +59,4 @@ services:
 
 volumes:
   postgis-prge-2025-data:
+  geoserver-data:

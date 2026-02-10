@@ -1,19 +1,62 @@
-import React from 'react';
-import {Typography, Button} from "@mui/material";
-import {Link} from 'react-router-dom';
-function Home(props) {
-    return (
-        <div className='home'>
-            <h1 className='home__title'>GEOPORTAL</h1>
+import React from "react";
+import { Button, Typography } from "@mui/material";
+import { Link } from "react-router-dom";
 
-            <Typography className='home__subtile'>
-                Geoportal tematyczny poswiecony danym przestrzennym.
+function Home() {
+  return (
+        <div className="homePage">
+          {/* GÓRNY PASEK */}
+          <header className="homeTopbar">
+      <div className="homeLogo">
+        <img src="/logo.png" alt="Logo" />
+      </div>
+
+      <Button className="homeLoginBtn" variant="contained">
+        Login
+      </Button>
+    </header>
+
+
+      {/* TŁO / “PLANSZA” */}
+      <main className="homeCard">
+        <div className="homeCardInner">
+          {/* LEWA STRONA – IKONA MAPY */}
+          <div className="homeMapIconWrapper">
+            <img
+              src="/map-icon.png"
+              alt="Mapa"
+              className="homeMapIcon"
+            />
+          </div>
+
+          {/* PRAWA STRONA – TEKST */}
+          <div className="homeHero">
+            <Typography className="homeTitle" component="h1">
+              <span className="homeTitleGeo">GEO</span>
+              <span className="homeTitlePortal">Portal</span>
             </Typography>
 
-            <Button className='home__button' variant='contained' size='large' component={Link}
-                    to='services'>START</Button>
+            <Button
+              className="homeStartBtn"
+              variant="contained"
+              component={Link}
+              to="/services"
+            >
+              START
+            </Button>
+
+            <Typography className="homeSubtitle">
+              Geoportal tematyczny poświęcony restauracjom
+            </Typography>
+          </div>
         </div>
-    );
+
+
+        {/* DOLNY PASEK */}
+        <div className="homeBottomStrip" />
+      </main>
+    </div>
+  );
 }
 
 export default Home;
