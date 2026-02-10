@@ -18,8 +18,9 @@ function Services() {
         </Typography>
       </div>
 
-      {/* Dwie karty */}
+      {/* Trzy karty */}
       <div className="servicesCards">
+        {/* 1. Lista restauracji */}
         <div className="servicesCard">
           <div className="servicesCardImg">
             <img src="/restaurants.png" alt="Dostępne restauracje" />
@@ -39,6 +40,7 @@ function Services() {
           </div>
         </div>
 
+        {/* 2. Mapa restauracji */}
         <div className="servicesCard">
           <div className="servicesCardImg">
             <img src="/world-map.png" alt="Mapa restauracji" />
@@ -54,6 +56,26 @@ function Services() {
               to="/map"
             >
               Przejdź
+            </Button>
+          </div>
+        </div>
+
+        {/* 3. Dodaj restaurację */}
+        <div className="servicesCard">
+          <div className="servicesCardImg">
+            <img src="/add-place.png" alt="Dodaj restaurację" />
+          </div>
+
+          <div className="servicesCardBody">
+            <div className="servicesCardLabel">Dodaj restaurację</div>
+
+            <Button
+              className="servicesBtn"
+              variant="contained"
+              component={Link}
+              to="/add"
+            >
+              Dodaj
             </Button>
           </div>
         </div>

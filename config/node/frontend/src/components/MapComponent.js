@@ -20,22 +20,7 @@ function MapComponent(props) {
                         source: new OSM(),
                     }),
                     // http://localhost:9000/geoserver/ne/wms?service=WMS&version=1.1.0&request=GetMap&layers=ne%3Acountries&bbox=-180.0%2C-90.0%2C180.0%2C83.64513&width=768&height=370&srs=EPSG%3A4326&styles=&format=application/openlayers
-                    new TileLayer({
-                        source: new TileWMS({
-                          url: 'http://localhost:9000/geoserver/ne/wms?',
-                          params: {'LAYERS': 'ne:countries', 'TILED': true},
-                          serverType: 'geoserver',
-                          transition: 0,
-                        }),
-                    }),
-                    new TileLayer({
-                        source: new TileWMS({
-                          url: 'http://localhost:9001/geoserver/ne/wms?',
-                          params: {'LAYERS': 'ne:coastlines', 'TILED': true},
-                          serverType: 'geoserver',
-                          transition: 0,
-                        }),
-                    })
+
                 ],
                 view: new View({
                     center: [21, 52],
