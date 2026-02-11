@@ -1,8 +1,10 @@
 import React, { useMemo, useState } from "react";
 import { Button, TextField, Typography } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function AddPlace() {
+  const navigate = useNavigate();
+
   const [form, setForm] = useState({
     name: "",
     street: "",
@@ -12,6 +14,7 @@ function AddPlace() {
   });
 
   const [touched, setTouched] = useState({});
+  const [saving, setSaving] = useState(false);
 
   const errors = useMemo(() => {
     const e = {};
@@ -20,7 +23,6 @@ function AddPlace() {
     if (!form.buildingNumber.trim()) e.buildingNumber = "Podaj numer budynku";
     if (!form.city.trim()) e.city = "Podaj miasto";
 
-    // URL opcjonalny, ale jeśli wpisany to sprawdź czy wygląda jak URL
     if (form.imageUrl.trim()) {
       try {
         // eslint-disable-next-line no-new
@@ -42,7 +44,7 @@ function AddPlace() {
     setTouched((prev) => ({ ...prev, [key]: true }));
   };
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
     setTouched({
       name: true,
@@ -52,19 +54,62 @@ function AddPlace() {
       imageUrl: true,
     });
 
-    if (!isValid) return;
+    if (!isValid || saving) return;
 
-    // NA RAZIE: tylko podgląd w konsoli (backend podłączymy w następnym kroku)
-    console.log("ADD PLACE FORM:", form);
+    setSaving(true);
+    try {
+      const payload = {
+        name: form.name.trim(),
+        street: form.street.trim(),
+        building_no: form.buildingNumber.trim(),
+        city: form.city.trim(),
+        image_url: form.imageUrl.trim() || null,
+      };
 
-    alert("Formularz poprawny ✅ (backend podłączymy w kolejnym kroku)");
+      // U Ciebie działa FastAPI na :10000 i endpointy są pod /app/...
+      const url = "http://localhost:10000/app/restaurants";
+
+      const res = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      // Czytamy tylko raz
+      const raw = await res.text();
+      let data = raw;
+
+      const ct = res.headers.get("content-type") || "";
+      if (raw && ct.includes("application/json")) {
+        try {
+          data = JSON.parse(raw);
+        } catch {
+          // zostaje raw string
+        }
+      }
+
+      if (!res.ok) {
+        const msg =
+          (data && typeof data === "object" && (data.detail || data.message)) ||
+          (typeof data === "string" && data) ||
+          `Błąd HTTP: ${res.status}`;
+        throw new Error(msg);
+      }
+
+      alert("Dodano restaurację ✅");
+      navigate("/list");
+    } catch (err) {
+      alert(`Nie udało się dodać restauracji.\n\n${err?.message || err}`);
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (
     <div className="addPage">
-      {/* logo + nagłówek jak w services */}
       <div className="addLogo">
-        <img src="/logo.png" alt="Logo" />
+        {/* logo.png jest w /public */}
+        <img src={process.env.PUBLIC_URL + "/logo.png"} alt="Logo" />
       </div>
 
       <div className="addHeader">
@@ -141,9 +186,9 @@ function AddPlace() {
               className="addBtnPrimary"
               type="submit"
               variant="contained"
-              disabled={!isValid}
+              disabled={!isValid || saving}
             >
-              Zapisz
+              {saving ? "ZAPISYWANIE..." : "Zapisz"}
             </Button>
           </div>
         </form>
