@@ -25,7 +25,6 @@ function AddPlace() {
 
     if (form.imageUrl.trim()) {
       try {
-        // eslint-disable-next-line no-new
         new URL(form.imageUrl.trim());
       } catch {
         e.imageUrl = "Podaj poprawny adres URL (np. https://...)";
@@ -66,7 +65,6 @@ function AddPlace() {
         image_url: form.imageUrl.trim() || null,
       };
 
-      // U Ciebie działa FastAPI na :10000 i endpointy są pod /app/...
       const url = "http://localhost:10000/app/restaurants";
 
       const res = await fetch(url, {
@@ -75,7 +73,6 @@ function AddPlace() {
         body: JSON.stringify(payload),
       });
 
-      // Czytamy tylko raz
       const raw = await res.text();
       let data = raw;
 
@@ -84,7 +81,6 @@ function AddPlace() {
         try {
           data = JSON.parse(raw);
         } catch {
-          // zostaje raw string
         }
       }
 
@@ -108,7 +104,6 @@ function AddPlace() {
   return (
     <div className="addPage">
       <div className="addLogo">
-        {/* logo.png jest w /public */}
         <img src={process.env.PUBLIC_URL + "/logo.png"} alt="Logo" />
       </div>
 

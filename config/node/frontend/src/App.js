@@ -18,5 +18,5 @@ function App() {
      </div>
   );
 }
-//TODO REMOVE DEPENDENCY OF REACT ROUTER IN CONTENERIZED VERS
+
 export default App;

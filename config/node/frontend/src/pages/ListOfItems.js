@@ -1,8 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Typography, Button } from "@mui/material";
 import { Link } from "react-router-dom";
 import "../styles/_list.scss";
-
 
 function ListOfItems() {
   const [items, setItems] = useState([]);
@@ -18,120 +16,124 @@ function ListOfItems() {
     []
   );
 
-  const loadRestaurants = async () => {
-    setStatus("loading");
-    setErrorMsg("");
-
-    for (const url of API_CANDIDATES) {
+  async function fetchJsonAny(urls, options) {
+    let lastErr = null;
+    for (const url of urls) {
       try {
-        const res = await fetch(url);
-        if (!res.ok) continue;
-        const data = await res.json();
-        setItems(Array.isArray(data) ? data : []);
-        setStatus("ok");
-        return;
-      } catch (e) {}
+        const res = await fetch(url, options);
+        if (!res.ok) {
+          const txt = await res.text().catch(() => "");
+          throw new Error(`${res.status} ${res.statusText} ${txt}`.trim());
+        }
+        const contentType = res.headers.get("content-type") || "";
+        if (contentType.includes("application/json")) return await res.json();
+        const t = await res.text();
+        try { return JSON.parse(t); } catch { return t; }
+      } catch (e) {
+        lastErr = e;
+      }
     }
+    throw lastErr || new Error("Brak odpowiedzi z API");
+  }
 
-    setStatus("error");
-    setErrorMsg("Nie udało się pobrać danych z backendu.");
-  };
+  async function loadRestaurants() {
+    try {
+      setStatus("loading");
+      setErrorMsg("");
+      const data = await fetchJsonAny(API_CANDIDATES, { method: "GET" });
+      setItems(Array.isArray(data) ? data : []);
+      setStatus("ready");
+    } catch (e) {
+      setStatus("error");
+      setErrorMsg(String(e?.message || e));
+    }
+  }
 
   useEffect(() => {
     loadRestaurants();
   }, []);
 
-  const openDetails = (row) => {
-    alert(
-      `${row?.name}\n${row?.street} ${row?.building_no}\n${row?.city}`
-    );
+  async function handleDelete(id) {
+    if (!window.confirm("Na pewno usunąć tę restaurację?")) return;
+
+    const prev = items;
+    setItems((cur) => cur.filter((x) => x.id !== id));
+
+    try {
+      const deleteUrls = API_CANDIDATES.map((u) => `${u}/${id}`);
+      await fetchJsonAny(deleteUrls, { method: "DELETE" });
+    } catch (e) {
+      setItems(prev);
+      alert("Nie udało się usunąć: " + String(e?.message || e));
+    }
+  }
+
+  const getAddress = (r) => {
+    const street = r.street || "";
+    const bn = r.building_no || "";
+    const city = r.city || "";
+    return `${street} ${bn}, ${city}`.replace(/\s+/g, " ").trim();
   };
 
   return (
-    <div className="list2Page">
-
-      {/* 🔥 LOGO W LEWYM GÓRNYM ROGU */}
-      <div className="globalLogo">
+    <div className="list-page">
+      <div className="list-page__logo">
         <img src="/logo.png" alt="logo" />
       </div>
 
+      <div className="list-card">
+        <h1 className="list-title">Lista restauracji</h1>
 
-      <div className="list2Card">
-
-        <h1 className="list2Title">Lista restauracji</h1>
-
-        <div className="list2Actions">
-          <Button component={Link} to="/" variant="contained">
-            Wróć
-          </Button>
-
-          <Button component={Link} to="/map" variant="contained">
-            Mapa
-          </Button>
-
-          <Button component={Link} to="/add" variant="contained">
-            Dodaj obiekt
-          </Button>
-
-          <Button onClick={loadRestaurants} variant="contained">
-            Odśwież
-          </Button>
+        <div className="list-actions">
+          <Link className="btn" to="/">WRÓĆ</Link>
+          <Link className="btn" to="/map">MAPA</Link>
+          <Link className="btn" to="/add">DODAJ OBIEKT</Link>
+          <button className="btn" onClick={loadRestaurants}>ODŚWIEŻ</button>
         </div>
 
-        <div className="list2TableWrap">
-          <div className="list2TableHead">
+        <div className="list-table">
+          <div className="list-header">
             <div>Zdjęcie</div>
             <div>Nazwa</div>
             <div>Adres</div>
-            <div>Akcje</div>
+            <div style={{ textAlign: "right" }}>Akcje</div>
           </div>
 
-          <div className="list2Table">
-            {status === "loading" && (
-              <div className="list2State">Ładowanie danych…</div>
-            )}
+          {items.map((r) => (
+            <div className="list-row" key={r.id}>
+              <div className="thumb">
+                <img
+                  src={r.image_url || ""}
+                  alt={r.name || "restaurant"}
+                  onError={(e) => {
+                    e.currentTarget.src =
+                      "data:image/svg+xml;charset=utf-8," +
+                      encodeURIComponent(
+                        `<svg xmlns="http://www.w3.org/2000/svg" width="300" height="160">
+                          <rect width="100%" height="100%" fill="#ddd"/>
+                          <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#666" font-family="Arial" font-size="18">
+                            brak zdjęcia
+                          </text>
+                        </svg>`
+                      );
+                  }}
+                />
+              </div>
 
-            {status === "error" && (
-              <div className="list2State">{errorMsg}</div>
-            )}
+              <div className="cell-box">{r.name || "-"}</div>
+              <div className="cell-box">{getAddress(r) || "-"}</div>
 
-            {status === "ok" &&
-              items.map((row) => {
-                const address = `${row.street} ${row.building_no}, ${row.city}`;
+              <button className="btn-danger" onClick={() => handleDelete(r.id)}>
+                USUŃ
+              </button>
+            </div>
+          ))}
+        </div>
 
-                return (
-                  <div className="list2Row" key={row.id}>
-                    <div className="list2Img">
-                      {row.image_url ? (
-                        <img src={row.image_url} alt={row.name} />
-                      ) : (
-                        <img
-                          src="https://via.placeholder.com/320x180.png?text=Brak+zdj%C4%99cia"
-                          alt="brak"
-                        />
-                      )}
-                    </div>
-
-                    <div className="list2Cell list2Name">
-                      {row.name}
-                    </div>
-
-                    <div className="list2Cell list2Address">
-                      {address}
-                    </div>
-
-                    <div>
-                      <Button
-                        className="list2Btn"
-                        onClick={() => openDetails(row)}
-                      >
-                        Szczegóły
-                      </Button>
-                    </div>
-                  </div>
-                );
-              })}
-          </div>
+        <div className="status-line">
+          {status === "loading" && "Ładowanie danych..."}
+          {status === "error" && `Błąd: ${errorMsg}`}
+          {status === "ready" && `Rekordów: ${items.length}`}
         </div>
       </div>
     </div>

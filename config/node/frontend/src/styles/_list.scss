@@ -1,130 +1,152 @@
-/* GLOBAL LOGO – LEWY GÓRNY RÓG */
-.globalLogo {
-  position: absolute;
-  top: 24px;
-  left: 32px;
-  width: 80px;
-  height: 80px;
-}
 
-.globalLogo img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-
-/* RESZTA ZOSTAJE TAK JAK BYŁA */
-
-.list2Page {
+.list-page {
   min-height: 100vh;
-  width: 100%;
-  background: radial-gradient(circle at 30% 15%, #dfe9de, #74b35c);
-  display: flex;
-  justify-content: center;
-  padding: 120px 16px 60px; /* ↑ więcej miejsca na logo */
+  background: linear-gradient(90deg, #d8e6d8 0%, #77a85f 100%);
+  position: relative;
+  padding: 28px 20px 60px;
   box-sizing: border-box;
 }
 
-.list2Card {
-  width: 980px;
-  max-width: 980px;
-  background: rgba(255, 255, 255, 0.28);
-  border: 2px solid rgba(0, 0, 0, 0.25);
-  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.18);
-  border-radius: 10px;
-  padding: 24px;
+.list-page__logo {
+  position: fixed;
+  top: 18px;
+  left: 18px;
+  width: 56px;
+  height: 56px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.20);
+  display: grid;
+  place-items: center;
+  z-index: 50;
+}
+.list-page__logo img {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  display: block;
+}
+
+
+.list-card {
+  width: 1400px;
+  margin: 0 auto;
+  background: rgba(220, 238, 220, 0.88);
+  border: 1px solid rgba(0,0,0,0.15);
+  border-radius: 8px;
+  box-shadow: 0 10px 22px rgba(0,0,0,0.20);
+  padding: 22px 22px 26px;
   box-sizing: border-box;
 }
 
-.list2Title {
+@media (max-width: 980px) {
+  .list-card {
+    width: 900px;
+    max-width: 900px;
+  }
+}
+
+.list-title {
   font-size: 56px;
-  margin-bottom: 20px;
-  color: #3c7a2b;
-  font-weight: 700;
-  text-shadow: 0 3px 0 rgba(0,0,0,0.12);
+  margin: 0 0 10px;
+  color: #2a6b2c;
+  text-shadow: 2px 2px 0 rgba(0,0,0,0.15);
+  font-family: Georgia, "Times New Roman", serif;
 }
 
-.list2Actions {
-  margin-bottom: 20px;
+.list-actions {
   display: flex;
   gap: 10px;
+  margin-bottom: 14px;
 }
 
-.list2TableWrap {
-  border: 2px solid rgba(0,0,0,0.25);
+.list-actions .btn {
+  background: #1e6bd6;
+  color: #fff;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 3px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 3px 0 rgba(0,0,0,0.18);
+  text-decoration: none;
+  display: inline-block;
+}
+
+.list-actions .btn:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 0 rgba(0,0,0,0.18);
+}
+
+.list-table {
+  border: 1px solid rgba(0,0,0,0.25);
   border-radius: 6px;
-  background: rgba(127, 176, 90, 0.35);
-  padding: 14px;
-}
-
-.list2TableHead {
-  display: grid;
-  grid-template-columns: 160px 1fr 1fr 140px;
-  gap: 12px;
-  padding: 10px 12px;
-  font-size: 22px;
-  background: rgba(127, 176, 90, 0.65);
-  border-radius: 6px;
-}
-
-.list2Table {
-  margin-top: 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  max-height: 520px;
-  overflow: auto;
-}
-
-.list2Row {
-  display: grid;
-  grid-template-columns: 160px 1fr 1fr 140px;
-  gap: 12px;
-  align-items: center;
-  background: rgba(255, 255, 255, 0.82);
-  border-radius: 6px;
-  padding: 10px 12px;
-}
-
-.list2Img {
-  width: 160px;
-  height: 88px;
-  border-radius: 4px;
   overflow: hidden;
+  background: rgba(170, 204, 145, 0.35);
 }
 
-.list2Img img {
+.list-header {
+  display: grid;
+  grid-template-columns: 160px 1fr 1fr 150px;
+  gap: 14px;
+  background: rgba(126, 170, 95, 0.85);
+  color: #eaf4e5;
+  font-weight: 800;
+  padding: 10px 14px;
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+.list-row {
+  display: grid;
+  grid-template-columns: 160px 1fr 1fr 150px;
+  gap: 14px;
+  align-items: center;
+  padding: 14px;
+  background: rgba(255,255,255,0.65);
+  border-top: 10px solid rgba(126, 170, 95, 0.35);
+}
+
+.thumb {
+  width: 150px;
+  height: 80px;
+  border-radius: 2px;
+  overflow: hidden;
+  background: #eee;
+  border: 1px solid rgba(0,0,0,0.15);
+  display: grid;
+  place-items: center;
+}
+.thumb img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  display: block;
 }
 
-.list2Cell {
-  background: rgba(220, 220, 220, 0.85);
-  border-radius: 4px;
-  padding: 14px 12px;
-  font-size: 18px;
+.cell-box {
+  background: rgba(210, 210, 210, 0.7);
+  border-radius: 2px;
+  padding: 10px 12px;
   text-align: center;
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  color: #2a6b2c;
+  border: 1px solid rgba(0,0,0,0.08);
 }
 
-.list2Name {
-  color: #2e7d32;
-  font-weight: 600;
+.btn-danger {
+  background: #1e6bd6;
+  color: #fff;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 3px;
+  font-weight: 800;
+  cursor: pointer;
+  justify-self: end;
 }
 
-.list2Address {
-  color: #2e7d32;
-}
-
-.list2Btn {
-  width: 100%;
-  height: 44px;
-  font-weight: 700 !important;
-  background: #1976d2 !important;
-  color: #fff !important;
-}
-
-.list2State {
-  margin-top: 12px;
-  font-size: 16px;
+.status-line {
+  margin-top: 10px;
+  font-size: 14px;
+  color: rgba(0,0,0,0.65);
 }

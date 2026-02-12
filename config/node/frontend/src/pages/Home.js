@@ -10,10 +10,6 @@ function Home() {
       <div className="homeLogo">
         <img src="/logo.png" alt="Logo" />
       </div>
-
-      <Button className="homeLoginBtn" variant="contained">
-        Login
-      </Button>
     </header>
 
 

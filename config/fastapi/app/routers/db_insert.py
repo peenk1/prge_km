@@ -6,17 +6,19 @@ from app.settings import db_name, db_user, db_password
 
 router_insert = APIRouter()
 
+
 def connect_to_db(db_name: str, db_user: str, db_password: str):
     return create_engine(
         f"postgresql://{db_user}:{db_password}@postgis:5432/{db_name}",
         pool_pre_ping=True,
     )
 
-# --- zostawiamy Twoje stare API (żeby nic nie rozwalić) ---
+
 class UserData(BaseModel):
     name: str
     posts: int
     location: str
+
 
 @router_insert.post("/insert_user")
 async def insert_user(user: UserData):
@@ -30,7 +32,6 @@ async def insert_user(user: UserData):
         raise HTTPException(status_code=500, detail=str(e))
 
 
-# --- NOWE: RESTAURACJE ---
 class RestaurantCreate(BaseModel):
     name: str
     street: str
@@ -66,8 +67,10 @@ async def get_restaurant(restaurant_id: int):
         """)
         with engine.begin() as conn:
             row = conn.execute(q, {"id": restaurant_id}).mappings().first()
+
         if not row:
             raise HTTPException(status_code=404, detail="Restaurant not found")
+
         return dict(row)
     except HTTPException:
         raise
@@ -88,5 +91,28 @@ async def create_restaurant(payload: RestaurantCreate):
         with engine.begin() as conn:
             row = conn.execute(q, params).mappings().first()
         return dict(row)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router_insert.delete("/restaurants/{restaurant_id}")
+async def delete_restaurant(restaurant_id: int):
+
+    try:
+        engine = connect_to_db(db_name, db_user, db_password)
+        q = text("""
+            DELETE FROM public.restaurants
+            WHERE id = :id
+            RETURNING id
+        """)
+        with engine.begin() as conn:
+            deleted = conn.execute(q, {"id": restaurant_id}).mappings().first()
+
+        if not deleted:
+            raise HTTPException(status_code=404, detail="Restaurant not found")
+
+        return {"ok": True, "deleted_id": deleted["id"]}
+    except HTTPException:
+        raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

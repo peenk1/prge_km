@@ -3,8 +3,6 @@
   width: 100%;
   position: relative;
   overflow: hidden;
-
-  /* ten sam klimat co Home */
   background: linear-gradient(135deg, #dbe7db 0%, #84c66c 55%, #6fb64f 100%);
   font-family: "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
 }
@@ -32,7 +30,7 @@
 }
 
 .servicesHeader {
-  padding: 28px 24px 0 120px; /* miejsce na logo */
+  padding: 28px 24px 0 120px;
 }
 
 .servicesTitle {

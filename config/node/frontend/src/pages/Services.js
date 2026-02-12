@@ -5,12 +5,10 @@ import { Link } from "react-router-dom";
 function Services() {
   return (
     <div className="servicesPage">
-      {/* Logo w lewym górnym rogu */}
       <div className="servicesLogo">
         <img src="/logo.png" alt="Logo" />
       </div>
 
-      {/* Nagłówek */}
       <div className="servicesHeader">
         <Typography className="servicesTitle" component="h1">
           <span className="servicesTitleGeo">GEO</span>
@@ -18,9 +16,7 @@ function Services() {
         </Typography>
       </div>
 
-      {/* Trzy karty */}
       <div className="servicesCards">
-        {/* 1. Lista restauracji */}
         <div className="servicesCard">
           <div className="servicesCardImg">
             <img src="/restaurants.png" alt="Dostępne restauracje" />
@@ -40,7 +36,6 @@ function Services() {
           </div>
         </div>
 
-        {/* 2. Mapa restauracji */}
         <div className="servicesCard">
           <div className="servicesCardImg">
             <img src="/world-map.png" alt="Mapa restauracji" />
@@ -60,7 +55,6 @@ function Services() {
           </div>
         </div>
 
-        {/* 3. Dodaj restaurację */}
         <div className="servicesCard">
           <div className="servicesCardImg">
             <img src="/add-place.png" alt="Dodaj restaurację" />

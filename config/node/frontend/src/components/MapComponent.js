@@ -29,23 +29,20 @@ function MapComponent() {
 
   useGeographic();
 
-  // 1) Init mapy (raz)
   useEffect(() => {
     const markersSource = new VectorSource();
 
-    // większe markery
     const markersLayer = new VectorLayer({
       source: markersSource,
       style: new Style({
         image: new CircleStyle({
-          radius: 10, // <-- większy marker
+          radius: 10,
           fill: new Fill({ color: "rgba(255, 0, 0, 0.9)" }),
           stroke: new Stroke({ color: "white", width: 2 }),
         }),
       }),
     });
 
-    // Prosty popup (tworzymy DOM ręcznie, bez CSS plików)
     const popupEl = document.createElement("div");
     popupEl.style.position = "relative";
     popupEl.style.background = "white";
@@ -57,9 +54,8 @@ function MapComponent() {
     popupEl.style.maxWidth = "280px";
     popupEl.style.fontSize = "14px";
     popupEl.style.lineHeight = "1.25";
-    popupEl.style.display = "none"; // ukryty dopóki nie klikniesz
+    popupEl.style.display = "none";
 
-    // mały “trójkąt”
     const caret = document.createElement("div");
     caret.style.position = "absolute";
     caret.style.left = "50%";
@@ -83,7 +79,7 @@ function MapComponent() {
       target: mapRef.current,
       layers: [new TileLayer({ source: new OSM() }), markersLayer],
       view: new View({
-        center: [21, 52], // Polska (lon, lat)
+        center: [21, 52],
         zoom: 6,
       }),
     });
@@ -95,7 +91,6 @@ function MapComponent() {
     popupOverlayRef.current = overlay;
     popupElRef.current = popupEl;
 
-    // klik w mapę: jeśli klikniesz poza markerem -> zamknij popup
     map.on("click", (evt) => {
       const feature = map.forEachFeatureAtPixel(evt.pixel, (f) => f);
 
@@ -114,7 +109,6 @@ function MapComponent() {
       const city = props.city ?? "";
       const imageUrl = props.image_url ?? "";
 
-      // zbuduj prostą treść popupu
       popupEl.innerHTML = `
         <div style="color:#333; font-weight:700; margin-bottom:6px;">${escapeHtml(name)}</div>
         <div style="color:#333; margin-bottom:8px;">
@@ -136,7 +130,6 @@ function MapComponent() {
       popupEl.style.display = "block";
       overlay.setPosition(coord);
 
-      // zamykanie “X”
       const closeBtn = popupEl.querySelector("#popupCloseBtn");
       if (closeBtn) {
         closeBtn.onclick = () => {
@@ -149,7 +142,6 @@ function MapComponent() {
     return () => map.setTarget(null);
   }, []);
 
-  // 2) Restauracje -> geokodowanie -> markery
   useEffect(() => {
     const API_CANDIDATES = [
       "/api/restaurants",
@@ -203,7 +195,6 @@ function MapComponent() {
           geometry: new Point(coord),
         });
 
-        // zapisujemy dane do popupu
         feature.setProperties({
           id: r.id,
           name: r.name,
@@ -216,7 +207,6 @@ function MapComponent() {
         source.addFeature(feature);
       }
 
-      // dopasuj widok do markerów
       const extent = source.getExtent();
       if (extent && extent[0] !== Infinity && mapObjRef.current) {
         mapObjRef.current.getView().fit(extent, {
@@ -233,7 +223,6 @@ function MapComponent() {
   return <div className="mapComponent" ref={mapRef} />;
 }
 
-/** proste escapowanie żeby nie wstrzyknąć HTML */
 function escapeHtml(str) {
   return String(str ?? "")
     .replaceAll("&", "&amp;")
@@ -243,7 +232,6 @@ function escapeHtml(str) {
     .replaceAll("'", "&#039;");
 }
 function escapeAttr(str) {
-  // do atrybutów (src)
   return escapeHtml(str).replaceAll("`", "&#096;");
 }
 
