@@ -92,7 +92,7 @@ function AddPlace() {
         throw new Error(msg);
       }
 
-      alert("Dodano restaurację ✅");
+      alert("Dodano restaurację");
       navigate("/list");
     } catch (err) {
       alert(`Nie udało się dodać restauracji.\n\n${err?.message || err}`);

@@ -13,25 +13,6 @@ def connect_to_db(db_name: str, db_user: str, db_password: str):
         pool_pre_ping=True,
     )
 
-
-class UserData(BaseModel):
-    name: str
-    posts: int
-    location: str
-
-
-@router_insert.post("/insert_user")
-async def insert_user(user: UserData):
-    try:
-        engine = connect_to_db(db_name, db_user, db_password)
-        query = text("INSERT INTO users (name, posts, location) VALUES (:name, :posts, :location)")
-        with engine.begin() as conn:
-            conn.execute(query, {"name": user.name, "posts": user.posts, "location": user.location})
-        return {"status": "ok"}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-
-
 class RestaurantCreate(BaseModel):
     name: str
     street: str
